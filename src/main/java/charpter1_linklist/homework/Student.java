@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//没有按Java cpp Python的顺序
+
 public class Student {
     String name;
     String language;
@@ -14,11 +14,9 @@ public class Student {
 
     public static void main(String[] args) {
 
-//        test1();
-        test2();
+        test1();
+//        test2();
 //        test3();
-//        test4();
-//        test5();
     }
 
     //测试1
@@ -34,11 +32,11 @@ public class Student {
         students.add(new Student("cb","Python"));
         students.add(new Student("bb","CPP"));
 
-        Student.insertAll(head,students);
+        Student res = Student.insertAll(head, students);
 
-        while(head!=null){
-            System.out.println(head.language+" "+head.name);
-            head=head.next;
+        while(res!=null){
+            System.out.println(res.language+" "+res.name);
+            res=res.next;
         }
     }
     public static void test2(){
@@ -51,13 +49,30 @@ public class Student {
         students.add(new Student("ab","Java"));
 
 
-        Student.insertAll(head,students);
+        Student res = Student.insertAll(head, students);
 
-        while(head!=null){
-            System.out.println(head.language+" "+head.name);
-            head=head.next;
+        while(res!=null){
+            System.out.println(res.language+" "+res.name);
+            res=res.next;
         }
     }
+    public static void test3(){
+        //初始化
+        Student head = new Student("11","Python");
+
+        ArrayList<Student> students = new ArrayList<>();
+        students.add(new Student("ab","Java"));
+        students.add(new Student("cc","CPP"));
+
+
+        Student res = Student.insertAll(head, students);
+
+        while(res!=null){
+            System.out.println(res.language+" "+res.name);
+            res=res.next;
+        }
+    }
+
     /**
      * @param head  原链表
      * @param nodes 需要插入的节点列表
@@ -66,7 +81,8 @@ public class Student {
         Student res=head;
 
         for (Student node : nodes) {
-            insertOne(head, (Student) node);
+            Student res1 = insertOne(res, (Student) node);
+            res=res1;
         }
 
         return res;
