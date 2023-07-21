@@ -22,143 +22,55 @@ public class Student {
     //测试1
     public static void test1(){
         //初始化
-        Student head = new Student("11","Java");
+        Student s1 = new Student("aa", "Java");
+        Student s2 = new Student("ab", "Java");
+        Student s4 = new Student("ba", "CPP");
+        Student s5 = new Student("bb", "CPP");
+        Student s6 = new Student("ca", "Python");
+        Student s7 = new Student("cb", "Python");
+        s1.next=s2;
+        s2.next=s4;
+        s4.next=s5;
+        s5.next=s6;
+        s6.next=s7;
 
-        ArrayList<Student> students = new ArrayList<>();
-        students.add(new Student("aa","Java"));
-        students.add(new Student("ca","Python"));
-        students.add(new Student("ba","CPP"));
-        students.add(new Student("ab","Java"));
-        students.add(new Student("cb","Python"));
-        students.add(new Student("bb","CPP"));
-
-        Student res = Student.insertAll(head, students);
-
-        while(res!=null){
-            System.out.println(res.language+" "+res.name);
-            res=res.next;
-        }
-    }
-    public static void test2(){
-        //初始化
-        Student head = new Student("11","CPP");
-
-        ArrayList<Student> students = new ArrayList<>();
-        students.add(new Student("ca","Python"));
-        students.add(new Student("ba","CPP"));
-        students.add(new Student("ab","Java"));
-
-
-        Student res = Student.insertAll(head, students);
+        Student addNode = new Student("cc", "Python");
+//        Student addNode = new Student("bc", "CPP");
+        Student addNode2 = new Student("ac", "Java");
+        Student res = Student.addStudentElement(s1, addNode);
+//        Student res = Student.addStudentElement(s1, addNode2);
 
         while(res!=null){
             System.out.println(res.language+" "+res.name);
             res=res.next;
         }
     }
-    public static void test3(){
-        //初始化
-        Student head = new Student("11","Python");
-
-        ArrayList<Student> students = new ArrayList<>();
-        students.add(new Student("ab","Java"));
-        students.add(new Student("cc","CPP"));
-
-
-        Student res = Student.insertAll(head, students);
-
-        while(res!=null){
-            System.out.println(res.language+" "+res.name);
-            res=res.next;
+    public static Student addStudentElement(Student node,Student addElement){
+        if(node==null){
+            return addElement;
         }
-    }
+        Student dummy=new Student();
+        dummy.next=node;
+        Student cur=dummy;
 
-    /**
-     * @param head  原链表
-     * @param nodes 需要插入的节点列表
-     */
-    public static Student insertAll(Student head, ArrayList<Student> nodes) {
-        Student res=head;
+        Student temp=null;
 
-        for (Student node : nodes) {
-            Student res1 = insertOne(res, (Student) node);
-            res=res1;
-        }
+        boolean isDummyAdded=false;
 
-        return res;
-    }
-    /**
-     * @param head 原链表
-     * @param node 需要插入的节点
-     */
-    public static Student insertOne(Student head, Student node){
-        Student cur=head;
-        Student newNode=node;
-
-        if(head==null){
-            head=newNode;
-            return head;
-        }
-
-        //待插入节点是Java
-        if(newNode.language.equals("Java")){
-            while(cur!=null) {
-                if (cur.language.equals("Java")) {
-//                    if(!(cur.next!=null&&cur.next.language.equals("Java")))
-                    if (cur.next == null
-                            ||cur.next.language.equals("CPP")
-                            || cur.next.language.equals("Python"))
-                        {
-                        newNode.next = cur.next;
-                        cur.next = newNode;
-                        return head;
-                    }
-                }
-                if(!head.language.equals("Java")){
-                    newNode.next=head;
-                    head=newNode;
-                    return head;
-                }
-                cur = cur.next;
+        while(cur!=null&&cur.next!=null){
+            if(cur.language==addElement.language&&cur.next.language!=addElement.language&&!isDummyAdded){
+                temp=cur.next;
+                cur.next=addElement;
+                addElement.next=temp;
+                isDummyAdded=true;
             }
+            cur=cur.next;
         }
-
-        //待插入节点是cpp
-        if(newNode.language.equals("CPP")){
-            while(cur!=null) {
-                if (cur.language.equals("CPP") && cur.next == null
-                        || cur.language.equals("Java") && cur.next == null
-                        || cur.language.equals("CPP") && cur.next.language.equals("Python")
-                        || cur.language.equals("Java") && cur.next.language.equals("Python")
-                        ) {
-                    newNode.next = cur.next;
-                    cur.next = newNode;
-                    return head;
-                }
-                if(head.language.equals("Python")){
-                    newNode.next=head;
-                    head=newNode;
-                    return head;
-                }
-                cur=cur.next;
-            }
-        }
-
-        //待插入节点是python
-        if(newNode.language.equals("Python")) {
-            while (cur.next != null) {
-                cur = cur.next;
-            }
-            newNode.next=cur.next;
-            cur.next=newNode;
-            return head;
-        }
-            return head;
+        return dummy.next;
     }
-
+    
     public Student() {
     }
-
     public Student(String name, String language) {
         this.name = name;
         this.language = language;
